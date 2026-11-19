@@ -1,0 +1,73 @@
+name: Build and deploy IBONDA dashboard
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'IBONDA-NEW-PROJECT.zip'
+      - '.github/workflows/deploy.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: ''
+
+      - name: Extract project archive
+        run: |
+          mkdir -p extracted
+          unzip -q IBONDA-NEW-PROJECT.zip -d extracted
+          echo "Archive contents:"
+          find extracted -maxdepth 3 -type f | head -80
+          PROJECT_DIR="$(find extracted -name package.json -printf '%h\n' | head -1)"
+          if [ -z "$PROJECT_DIR" ]; then
+            echo "package.json was not found inside the uploaded ZIP."
+            exit 1
+          fi
+          echo "PROJECT_DIR=$PROJECT_DIR" >> "$GITHUB_ENV"
+
+      - name: Install dependencies
+        working-directory: ${{ env.PROJECT_DIR }}
+        run: npm install
+
+      - name: Build
+        working-directory: ${{ env.PROJECT_DIR }}
+        env:
+          GITHUB_ACTIONS: 'true'
+        run: npm run build
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ env.PROJECT_DIR }}/dist
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

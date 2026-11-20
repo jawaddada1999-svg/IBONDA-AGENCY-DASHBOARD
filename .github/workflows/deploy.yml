@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'IBONDA-NEW-PROJECT.zip'
+      - 'agency-redesign.css'
       - '.github/workflows/deploy.yml'
   workflow_dispatch:
 
@@ -34,14 +35,21 @@ jobs:
         run: |
           mkdir -p extracted
           unzip -q IBONDA-NEW-PROJECT.zip -d extracted
-          echo "Archive contents:"
-          find extracted -maxdepth 3 -type f | head -80
-          PROJECT_DIR="$(find extracted -name package.json -printf '%h\n' | head -1)"
+          PROJECT_DIR="$(find extracted -name package.json -printf '%h\\n' | head -1)"
           if [ -z "$PROJECT_DIR" ]; then
             echo "package.json was not found inside the uploaded ZIP."
             exit 1
           fi
           echo "PROJECT_DIR=$PROJECT_DIR" >> "$GITHUB_ENV"
+          echo "Using project directory: $PROJECT_DIR"
+
+      - name: Apply dashboard visual refresh
+        run: |
+          if [ ! -f "$PROJECT_DIR/src/index.css" ]; then
+            echo "Dashboard stylesheet was not found."
+            exit 1
+          fi
+          cat agency-redesign.css >> "$PROJECT_DIR/src/index.css"
 
       - name: Install dependencies
         working-directory: ${{ env.PROJECT_DIR }}

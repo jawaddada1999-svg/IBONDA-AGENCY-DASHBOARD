@@ -6,6 +6,7 @@ on:
     paths:
       - 'IBONDA-NEW-PROJECT.zip'
       - 'agency-redesign.css'
+      - 'dashboard-overrides/**'
       - '.github/workflows/deploy.yml'
   workflow_dispatch:
 
@@ -42,6 +43,9 @@ jobs:
           fi
           echo "PROJECT_DIR=$PROJECT_DIR" >> "$GITHUB_ENV"
           echo "Using project directory: $PROJECT_DIR"
+
+      - name: Apply dashboard KPI additions
+        run: node dashboard-overrides/add-intent-kpis.mjs "$PROJECT_DIR"
 
       - name: Apply dashboard visual refresh
         run: |

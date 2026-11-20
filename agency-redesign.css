@@ -1,0 +1,133 @@
+/* IBONDA Agency Dashboard — premium visual refresh.
+   Presentation-only overrides: preserve all existing sections and interactions. */
+:root {
+  --app-canvas: #f4f7f9;
+  --app-line: #e4ebef;
+  --app-ink: #142a35;
+  --app-muted: #647782;
+  --app-surface: #ffffff;
+  --app-soft: #f7fafb;
+  --app-shadow: 0 2px 6px rgba(16,43,56,.035), 0 14px 34px rgba(16,43,56,.045);
+  --app-shadow-hover: 0 8px 18px rgba(16,43,56,.07), 0 22px 46px rgba(16,43,56,.075);
+}
+html {
+  color: var(--app-ink);
+  font-size: 14px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+body { background: var(--app-canvas); color: var(--app-ink); }
+#root { min-height: 100vh; }
+main { background: linear-gradient(180deg,#f7f9fa 0%,#f2f6f8 100%); background-image:none; }
+
+/* Brand-colored sidebar retained; only depth, spacing and interaction polish. */
+aside > div > div,
+.fixed.inset-0 aside > div {
+  background-image: linear-gradient(165deg,rgba(255,255,255,.035),transparent 38%,rgba(2,20,29,.13));
+}
+aside nav { padding-inline:12px; }
+aside nav button {
+  min-height:42px; border:1px solid transparent; border-radius:12px;
+  letter-spacing:-.01em;
+  transition:background-color .18s ease,border-color .18s ease,color .18s ease,transform .18s ease;
+}
+aside nav button:hover {
+  background:rgba(255,255,255,.095); border-color:rgba(255,255,255,.075);
+  transform:translateX(-1px);
+}
+aside nav button[aria-current="page"],
+aside nav button.bg-white\\/15 {
+  background:rgba(255,255,255,.15); border-color:rgba(255,255,255,.16);
+  box-shadow:inset 3px 0 0 var(--agency-accent),0 5px 14px rgba(0,0,0,.08);
+}
+
+/* Premium sticky header. */
+header.sticky {
+  min-height:68px; background:rgba(255,255,255,.92);
+  border-bottom-color:#e5ecef; box-shadow:0 4px 18px rgba(15,42,54,.035);
+  backdrop-filter:blur(16px);
+}
+header input[type="text"] {
+  min-height:40px; background:#f5f8f9; border-color:#e4ebef; border-radius:12px;
+}
+header input[type="text"]:focus { background:#fff; border-color:var(--agency-primary)!important; }
+
+/* Shared surfaces and hierarchy. */
+.card-surface,
+[class*="rounded-xl"][class*="border"][class*="bg-white"],
+[class*="rounded-2xl"][class*="border"][class*="bg-white"] {
+  box-shadow:var(--app-shadow);
+}
+.card-surface { border-color:var(--app-line); }
+main .bg-white.border,
+main .bg-white\\/95.border,
+main .bg-white\\/90.border { border-color:var(--app-line); }
+main [class*="rounded-2xl"][class*="border"] { border-color:var(--app-line); border-radius:18px; }
+main [class*="rounded-xl"][class*="border"] { border-radius:13px; }
+main .card-surface.flex.flex-col,
+main .card-surface.grid { transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease; }
+main .card-surface.flex.flex-col:hover,
+main .card-surface.grid:hover { box-shadow:var(--app-shadow-hover); }
+main .font-display { letter-spacing:-.025em; }
+main h2,main h3,main h4 { color:#142d39; letter-spacing:-.02em; }
+main p.text-zinc-600,main p.text-slate-600,main .text-zinc-500,main .text-slate-500 { color:#687d87; }
+
+/* Tables: calm tinted headers, readable rows, horizontal scrolling on small screens. */
+main .overflow-x-auto {
+  max-width:100%; overscroll-behavior-x:contain;
+  scrollbar-width:thin; scrollbar-color:#b9c8cf transparent;
+}
+main table { border-collapse:separate; border-spacing:0; color:#263e49; }
+main table thead th {
+  background:#f2f6f8; color:#526a75; font-size:10.5px; font-weight:800;
+  letter-spacing:.025em; white-space:nowrap; border-bottom:1px solid #e2eaee;
+}
+main table thead th:first-child { border-start-start-radius:9px; }
+main table thead th:last-child { border-start-end-radius:9px; }
+main table tbody tr { transition:background-color .15s ease; }
+main table tbody tr:hover { background:#f7fafb; }
+main table tbody td { border-bottom-color:#edf1f3; vertical-align:middle; }
+main table tbody tr:last-child td { border-bottom:0; }
+
+/* Controls, forms and buttons. */
+main input:not([type="checkbox"]):not([type="radio"]),
+main select,main textarea,header input {
+  color:#19333f; border-color:#dce6ea; border-radius:10px;
+}
+main input:not([type="checkbox"]):not([type="radio"]):focus,
+main select:focus,main textarea:focus {
+  border-color:var(--agency-primary)!important;
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--agency-primary) 12%,transparent);
+}
+main input::placeholder,main textarea::placeholder { color:#9aabb3; }
+button,a,input,select,textarea { -webkit-tap-highlight-color:transparent; }
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible {
+  outline:3px solid color-mix(in srgb,var(--agency-accent) 28%,transparent); outline-offset:2px;
+}
+.btn-primary,.btn-accent,.btn-secondary,.btn-outline {
+  min-height:36px; border-radius:11px; font-weight:700; letter-spacing:-.01em;
+}
+.btn-primary,.btn-accent {
+  box-shadow:0 4px 10px color-mix(in srgb,var(--agency-primary) 17%,transparent),inset 0 1px 0 rgba(255,255,255,.18);
+}
+
+/* Dialogs and menus. */
+[role="dialog"] > div,
+.fixed.z-50 [class*="shadow-2xl"] {
+  border-color:#e3eaee; box-shadow:0 24px 70px rgba(13,35,46,.22);
+}
+
+/* Responsive behavior: never squeeze or hide table columns/actions. */
+@media(max-width:767px) {
+  html { font-size:13.5px; }
+  header.sticky { min-height:62px; padding-inline:12px; gap:10px; }
+  main { padding:14px!important; }
+  main .overflow-x-auto table { min-width:680px; }
+  main .grid { min-width:0; }
+  main .card-surface { border-radius:15px; }
+  footer { padding-inline:14px!important; }
+}
+@media(prefers-reduced-motion:reduce) {
+  *,*::before,*::after { transition-duration:.01ms!important; animation-duration:.01ms!important; }
+}

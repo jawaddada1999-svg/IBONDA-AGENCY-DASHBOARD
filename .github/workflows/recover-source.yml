@@ -1,0 +1,25 @@
+name: Recover source archive
+on:
+  push:
+    paths:
+      - '.github/workflows/recover-source.yml'
+      - 'IBONDA-NEW-PROJECT.zip'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Extract original source
+        run: |
+          mkdir -p recovered
+          unzip -q IBONDA-NEW-PROJECT.zip -d recovered
+      - name: Upload source files as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: recovered-source
+          path: recovered/
+          retention-days: 2

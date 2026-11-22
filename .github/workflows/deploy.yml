@@ -44,6 +44,9 @@ jobs:
           echo "PROJECT_DIR=$PROJECT_DIR" >> "$GITHUB_ENV"
           echo "Using project directory: $PROJECT_DIR"
 
+      - name: Apply seller lead and intent-specific CRM enhancements
+        run: node dashboard-overrides/apply-seller-leads.mjs "$PROJECT_DIR"
+
       - name: Apply dashboard KPI additions
         run: node dashboard-overrides/add-intent-kpis.mjs "$PROJECT_DIR"
 

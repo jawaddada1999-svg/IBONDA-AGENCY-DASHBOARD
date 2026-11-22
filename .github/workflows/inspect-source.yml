@@ -12,14 +12,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Unpack and inspect relevant source
+      - name: Unpack and print CRM source excerpts
         shell: bash
         run: |
           mkdir -p extracted
           unzip -q IBONDA-NEW-PROJECT.zip -d extracted
-          echo '=== SOURCE FILES ==='
-          find extracted -type f | sed 's#extracted/##' | head -150
-          echo '=== CRM COMPONENT CANDIDATES ==='
-          grep -RIlE 'إضافة عميل محتمل|Add Lead|lead form|CRM|شراء|كراء|بيع' extracted --include='*.tsx' --include='*.jsx' --include='*.ts' --include='*.js' | head -40
-          echo '=== TARGETED CONTEXT ==='
-          grep -RInE 'إضافة عميل محتمل|Add Lead|lead form|intent|buy|rent|sell' extracted --include='*.tsx' --include='*.jsx' --include='*.ts' --include='*.js' | head -220
+          D=extracted/IBONDA-AGENCY-DASHBOARD/src
+          echo '=== LeadsSection: relevant matches ==='
+          grep -nE 'AddLead|addLead|leadModal|Modal|intent|transaction_type|newLead|LeadForm|lead form' "$D/components/sections/LeadsSection.tsx" | head -120
+          echo '=== LeadsSection: source 1-420 ==='
+          sed -n '1,420p' "$D/components/sections/LeadsSection.tsx"
+          echo '=== QuickModals relevant lines ==='
+          grep -nE 'Lead|lead|intent|transaction_type|buyer|renter|seller|Modal' "$D/components/modals/QuickModals.tsx" | head -140
+          echo '=== QuickModals source excerpt ==='
+          sed -n '1,460p' "$D/components/modals/QuickModals.tsx"
+          echo '=== Lead types ==='
+          grep -nE 'interface Lead|type Lead|transaction_type|LeadIntent' "$D/types/domain.ts"

@@ -47,6 +47,9 @@ jobs:
       - name: Apply seller lead and intent-specific CRM enhancements
         run: node dashboard-overrides/apply-seller-leads.mjs "$PROJECT_DIR"
 
+      - name: Add single owner selection and quick owner creation to properties
+        run: node dashboard-overrides/add-single-owner-property-link.mjs "$PROJECT_DIR"
+
       - name: Keep CRM table column titles clearly visible
         run: node dashboard-overrides/visible-table-headers.mjs "$PROJECT_DIR"
 

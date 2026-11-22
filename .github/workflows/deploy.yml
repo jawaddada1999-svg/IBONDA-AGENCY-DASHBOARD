@@ -47,6 +47,9 @@ jobs:
       - name: Apply seller lead and intent-specific CRM enhancements
         run: node dashboard-overrides/apply-seller-leads.mjs "$PROJECT_DIR"
 
+      - name: Apply seller lead and intent-specific CRM enhancements
+        run: node dashboard-overrides/apply-seller-leads.mjs "$PROJECT_DIR"
+
       - name: Apply dashboard KPI additions
         run: node dashboard-overrides/add-intent-kpis.mjs "$PROJECT_DIR"
 
